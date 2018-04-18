@@ -5,13 +5,13 @@ var Twitter = require('twitter');
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 
-
+var fs = require("fs");
 var request = require("request");
 
-var command = process.argv[2];
 var args = process.argv;
-var media;
-var queryUrl;
+var command = args[2];
+var media = '';
+
 for (var i = 3; i < args.length; i++) {
     if (i > 3 && i < args.length) {
       media = media + "+" + args[i];
@@ -21,28 +21,56 @@ for (var i = 3; i < args.length; i++) {
     }
   }
 
-  console.log(command, media)
+//   console.log(command, media)
 
   switch (command) {
     case "my-tweets":
-        console.log("this will eventually show 20 tweets");
-        break;
-        
-    case "spotify-this":
-        console.log("this will eventually show Artist(s), The song's name, A preview link of the song from Spotify, The album that the song is from")
-        
-        spotify.search({ type: 'track', query: media }, function (err, data) {
-            if (err) {
-                return console.log('Error occurred: ' + err);
+        var params = {
+            screen_name: 'QuintyQuints',
+            count: 20,
+            result_type: 'recent',
+          }
+          client.get('statuses/user_timeline', params, function(err, data, response) {
+            if(!err){
+              for (let i = 0; i < data.length; i++){
+                  console.log(data[i].created_at, ':\n' + data[i].text + '\n')
+              }
+            } else {
+              return console.log(err);
             }
-            var info = data.tracks.items;
-            console.log(
-                "\nArtist: " + info[0].artists[0].name +
-                "\nSong: " + info[0].name +
-                "\nAlbum: " + info[0].album.name +
-                // ATTN: Some songs preview url returns null
-                "\nPreview: " + info[0].preview_url
-            )
+          })
+        break;
+
+    case "do-what-it-says":
+        fs.readFile("random.txt", "utf8", function(err, data){
+            if (!err) {
+                var defaultItems = data.split(",")
+                return media = defaultItems[1]
+                console.log(media)
+            } else {
+                return console.log(err);
+            }
+ 
+        })
+        // break;
+
+    case "spotify-this":
+        if (media === ''){
+            media = 'i want it that way'
+        }
+        spotify.search({ type: 'track', query: media }, function (err, data) {
+            if (!err) {
+                var info = data.tracks.items;
+                console.log(
+                    "\nArtist: " + info[0].artists[0].name +
+                    "\nSong: " + info[0].name +
+                    "\nAlbum: " + info[0].album.name +
+                    // ATTN: Some songs preview url returns null
+                    "\nPreview: " + info[0].preview_url
+                )
+            } else {
+                return console.log(err);
+            }
         });
         break;
 
@@ -56,8 +84,5 @@ for (var i = 3; i < args.length; i++) {
             }
           });
         
-        break;
-    case "do-what-it-says":
-        console.log("spotify info for I Want it That Way")
         break;
   }
