@@ -4,12 +4,14 @@ LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and R
 
 ## How to Use
 
-LIRI allows you to look up song info on Spotify, movie info from OMBD, and can show you 20 recent tweets.
+LIRI allows you to look up song info on Spotify, movie info from OMBD, and can show you 20 recent tweets. The do-what-it-says command runs a default command (set in the random.txt file).
 
 ### Node commands
 
 LIRI takes the following commands:
-* spotify-this
-* movie-this
-* my-tweets
+* spotify-this <parameter>
+* movie-this  <parameter>
+* my-tweets 
 * do-what-it-says
+
+If you don't provide a parameter you will be shown info for a default song or movie. 
