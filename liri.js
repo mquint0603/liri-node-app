@@ -21,7 +21,6 @@ for (var i = 3; i < args.length; i++) {
     }
   }
 
-//   console.log(command, media)
 
   switch (command) {
     case "my-tweets":
@@ -43,38 +42,26 @@ for (var i = 3; i < args.length; i++) {
 
     case "do-what-it-says":
         fs.readFile("random.txt", "utf8", function(err, data){
-            if (!err) {
-                var defaultItems = data.split(",")
-                return media = defaultItems[1]
-                console.log(media)
-            } else {
+            if (err) {
                 return console.log(err);
             }
- 
-        })
-        // break;
-
-    case "spotify-this":
-        if (media === ''){
-            media = 'i want it that way'
-        }
-        spotify.search({ type: 'track', query: media }, function (err, data) {
-            if (!err) {
-                var info = data.tracks.items;
-                console.log(
-                    "\nArtist: " + info[0].artists[0].name +
-                    "\nSong: " + info[0].name +
-                    "\nAlbum: " + info[0].album.name +
-                    // ATTN: Some songs preview url returns null
-                    "\nPreview: " + info[0].preview_url
-                )
-            } else {
-                return console.log(err);
-            }
+            var defaultItems = data.split(",")
+            media = defaultItems[1]
+            song()
         });
         break;
 
+    case "spotify-this":
+        if (media === '' && command === "spotify-this"){
+            media = 'the sign ace of base'
+        } 
+        song()
+        break;
+
     case "movie-this":
+        if (media === ''){
+            media = 'mr nobody'
+        }
         var queryUrl = "http://www.omdbapi.com/?t=" + media + "&y=&plot=short&apikey=trilogy";
         request(queryUrl, function(error, response, body) {
             if (!error && response.statusCode === 200) {
@@ -85,4 +72,24 @@ for (var i = 3; i < args.length; i++) {
           });
         
         break;
+  }
+
+  function song () {
+    spotify.search({ type: 'track', query: media }, function (err, data) {
+        if (!err) {
+            var info = data.tracks.items;
+            console.log(
+                "\nArtist: " + info[0].artists[0].name +
+                "\nSong: " + info[0].name +
+                "\nAlbum: " + info[0].album.name +
+                // ATTN: Some songs preview url returns null
+                "\nPreview: " + info[0].preview_url
+            )
+        } else {
+            return console.log(err);
+        }
+    });
+  }
+  function movie (){
+      
   }
