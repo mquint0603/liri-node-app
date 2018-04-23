@@ -49,6 +49,9 @@ function doStuff (){
           break;
       case "do-what-it-says":
           doWhatitSays()
+          break;
+      default:
+      console.log("Please enter a valid command. Try my-tweets, spotify-this, movie-this, or do-what-it-says")
     }
 }
 

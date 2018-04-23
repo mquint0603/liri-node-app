@@ -9,9 +9,12 @@ LIRI allows you to look up song info on Spotify, movie info from OMBD, and can s
 ### Node commands
 
 LIRI takes the following commands:
-* spotify-this <parameter>
-* movie-this  <parameter>
+* spotify-this parameter
+* movie-this  parameter
 * my-tweets 
 * do-what-it-says
 
 If you don't provide a parameter you will be shown info for a default song or movie. 
+
+
+Past searches can be found in the log.txt file.
